@@ -1,0 +1,102 @@
+<script src="http://code.jquery.com/jquery-1.2.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+var $maxpoints = 1000; 
+var $j = jQuery.noConflict(); 
+$j(document).ready(function(){    
+	$j("#resultTable").hide();
+	$j("#maxpoints").text($maxpoints);
+	$j("#calcButton").click(function(){   
+		var $currentgrade = $j("#currentgrade").val();
+		var $percentgrade = $j("#percentgrade").val();
+		if ($currentgrade > 0 && $maxpoints > $currentgrade && $percentgrade > 0 && 100 > $percentgrade) {
+			$j("#resultTable").show();
+			$j("#current").text($currentgrade);
+			$j("#maxpointtotal").text($maxpoints);
+			$j("#percent").text($percentgrade + "%");
+			var $currentmax = Math.round($currentgrade / ($percentgrade / 100));
+			$j("#currentmax").text($currentmax);
+			var $maxadditional = $maxpoints - $currentmax;
+			var $maxtotal = Math.round(+$currentgrade + $maxadditional);
+			$j("#maximum").text($maxtotal);
+			var $maxgrade = Math.round(100 * $maxtotal / $maxpoints);
+			$j("#maxgrade").text($maxgrade + "%");
+			var $cminus = Math.round(100 * (((.695 * $maxpoints) - $currentgrade) / $maxadditional));
+			var $bminus = Math.round(100 * (((.795 * $maxpoints) - $currentgrade) / $maxadditional));
+			var $aminus = Math.round(100 * (((.895 * $maxpoints) - $currentgrade) / $maxadditional));
+			if (0 > $cminus || $cminus > 100) $cminus = "Impossible to earn this";
+			else $cminus = $cminus + "%";
+			if (0 > $bminus || $bminus > 100) $bminus = "Impossible to earn this";
+			else $bminus = $bminus + "%";
+			if (0 > $aminus || $aminus > 100) $aminus = "Impossible to earn this";
+			else $aminus = $aminus + "%";
+			$j("#cminus").text($cminus);
+			$j("#bminus").text($bminus);
+			$j("#aminus").text($aminus);
+			var $minpossible = Math.round(100 * $currentgrade / $maxpoints) + "%";
+			$j("#rangepossible").text($minpossible + " - " + $maxgrade + "%");
+		} else { 
+			alert("To use this calculator, you need to enter valid numbers in the two textboxes before clicking Calculate."); 
+		}
+	}); 
+});
+</script>
+<p>If you want to know your ability to earn certain grades, use the calculator below. You should be able to find both of the values below in the Gradebook.</p>
+<table>
+<tbody>
+<tr>
+<td>How many points have you earned so far?<br /> (This should be between 0 and <span id="maxpoints"> </span>.)</td>
+<td><input type="text" id="currentgrade" /></td>
+</tr>
+<tr>
+<td>What is your percentage grade so far?<br /> (This should be between 0 and 100; don't type a percent sign!)</td>
+<td><input type="text" id="percentgrade" /></td>
+</tr>
+<tr>
+<td colspan="2"><input type="button" id="calcButton" value="Calculate! - Results Appear Below" /></td>
+</tr>
+</tbody>
+</table>
+<table id="resultTable">
+<tbody>
+<tr>
+<td>Current Points Earned:</td>
+<td><span id="current"> </span></td>
+</tr>
+<tr>
+<td>Points Possible by End of Term:</td>
+<td><span id="maxpointtotal"> </span></td>
+</tr>
+<tr>
+<td>Current Percentage:</td>
+<td><span id="percent"> </span></td>
+</tr>
+<tr>
+<td>Points Possible So Far:</td>
+<td><span id="currentmax"> </span></td>
+</tr>
+<tr>
+<td>Maximum Possible Points by End of Semester (all 100%s):</td>
+<td><span id="maximum"> </span></td>
+</tr>
+<tr>
+<td>Maximum Possible Grade by End of Semester (all 100%s):</td>
+<td><span id="maxgrade"> </span></td>
+</tr>
+<tr>
+<td>Average Grade Forward Needed to Earn C- (69.5%):</td>
+<td><span id="cminus"> </span></td>
+</tr>
+<tr>
+<td>Average Grade Forward Needed to Earn B- (79.5%):</td>
+<td><span id="bminus"> </span></td>
+</tr>
+<tr>
+<td>Average Grade Forward Needed to Earn A- (89.5%):</td>
+<td><span id="aminus"> </span></td>
+</tr>
+<tr>
+<td><strong>Grade Range Possible:</strong></td>
+<td><span id="rangepossible"> </span></td>
+</tr>
+</tbody>
+</table>
